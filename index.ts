@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Event } from "./models/Event";
 import express, { Express, Request, Response, json } from "express";
 const app: Express = express();
