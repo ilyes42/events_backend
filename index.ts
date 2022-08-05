@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "reflect-metadata";
 import { Event } from "./entities/Event";
 import { DataSource } from "typeorm";
@@ -9,11 +10,11 @@ app.use(json());
 
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "p@ssw0rd",
-  database: "events-app-db",
+  host: process.env.db_host,
+  port: process.env.db_port as unknown as number,
+  username: process.env.db_user,
+  password: process.env.db_password,
+  database: process.env.db_name,
   entities: [Event],
   synchronize: true,
   logging: false,
