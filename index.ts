@@ -27,12 +27,15 @@ app.get("/api/v1/events", async (req: Request, res: Response) => {
 });
 
 // GET One Event By ID.
-// app.get("/api/v1/events/:id", (req: Request, res: Response) => {
-//   const eventId: number = parseInt(req.params.id);
-//   const event = events.filter((e) => e.id === eventId);
-//   res.status(200).json(event);
-// });
+app.get("/api/v1/events/:id", async (req: Request, res: Response) => {
+  const eventId: number = parseInt(req.params.id);
+  const foundEvent = await AppDataSource.manager.findOneBy(Event, {
+    id: eventId,
+  });
+  return res.status(201).json(foundEvent);
+});
 
+// POST new event.
 app.post("/api/v1/events", async (req: Request, res: Response) => {
   const eventName: string = req.body.name;
   const newEvent: Event = new Event(eventName);
