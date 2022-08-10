@@ -20,16 +20,18 @@ const AppDataSource = new DataSource({
   logging: false,
 });
 
+const eventRepository = AppDataSource.getRepository(Event);
+
 // GET All Events.
 app.get("/api/v1/events", async (req: Request, res: Response) => {
-  const allEvents = await AppDataSource.manager.find(Event);
+  const allEvents = await eventRepository.find();
   return res.status(200).json(allEvents);
 });
 
 // GET One Event By ID.
 app.get("/api/v1/events/:id", async (req: Request, res: Response) => {
   const eventId: number = parseInt(req.params.id);
-  const foundEvent = await AppDataSource.manager.findOneBy(Event, {
+  const foundEvent = await eventRepository.findOneBy({
     id: eventId,
   });
   return res.status(201).json(foundEvent);
@@ -39,7 +41,7 @@ app.get("/api/v1/events/:id", async (req: Request, res: Response) => {
 app.post("/api/v1/events", async (req: Request, res: Response) => {
   const eventName: string = req.body.name;
   const newEvent: Event = new Event(eventName);
-  await AppDataSource.manager.save<Event>(newEvent);
+  await eventRepository.save(newEvent);
   const allEevents = await AppDataSource.manager.find(Event);
   return res.status(201).json(allEevents);
 });
